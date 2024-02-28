@@ -1,0 +1,55 @@
+{% load staticfiles i18n %}
+<!DOCTYPE HTML>
+<html lang="" >
+<canvas id="graph" height="500" width="700"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.bundle.min.js"></script>
+<script>
+var canvas = document.getElementById("graph");
+var s1 = [
+	{% for s in latest_samples_list %} {x:"{{ s.data|date:"Y-m-d H:i:s" }}", y: "{{ s.t1 }}" }, {% endfor %}
+	];
+var s2 = [
+	{% for s in latest_samples_list %} {x:"{{ s.data|date:"Y-m-d H:i:s" }}", y: "{{ s.t2 }}" }, {% endfor %}
+	];
+var s3 = [
+	{% for s in latest_samples_list %} {x:"{{ s.data|date:"Y-m-d H:i:s" }}", y: "{{ s.t3 }}" }, {% endfor %}
+	];
+var graphParams = {
+	type:"line",
+	data:{
+		datasets: [{
+			label:"niska",
+			data:s1,
+			borderColor:"red",
+			backgroundColor:"transparent",
+		},
+		{
+			label:"średnia",
+			data:s2,
+			borderColor:"blue",
+			backgroundColor:"transparent",
+		},
+		{
+			label:"wysoka",
+			data:s3,
+			borderColor:"green",
+			backgroundColor:"transparent",
+		}
+		],
+		radius: 0,
+	},
+	options:{
+		responsive:false,	
+		scales:{
+			xAxes:[{
+				type:"time",
+				distribution: "series",
+			}],
+		}
+	}
+
+}
+ctx = new Chart(canvas, graphParams);
+</script>
+
+</html>

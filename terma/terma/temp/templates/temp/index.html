@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Raport</title>
+	</head>
+	<body>
+
+{% if probki %}
+    <table>
+	<tr>
+	<th>data</th><td></td>
+	<th>t1</th><td></td>
+	<th>t2</th><td></td>
+	<th>t3</th><td></td>
+	<th>g0</th><td></td>
+	<th>g1</th><td></td>
+	<th>g2</th><td></td>
+	<th>g3</th><td></td>
+	<th>turbo</th><td></td>
+	<th>wakacje</th><td></td>
+	<th>awaria</th>
+	</tr>
+	{% for p in probki %}
+	<tr>
+	<td>{{ p.data|date:"d-m H:i" }}</td> 
+	<td>|</td>
+	<td>{{ p.t1|floatformat:2 }} </td>
+	<td>|</td>
+	<td>{{ p.t2|floatformat:2 }} </td>
+	<td>|</td>
+	<td>{{ p.t3|floatformat:2 }} </td>
+	<td>|</td>
+	<td>{% if p.g0 %} <font color='red'>on</font> {% else %} off {% endif %} </td>
+	<td>|</td>
+	<td>{% if p.g1 %} <font color='red'>on</font> {% else %} off {% endif %} </td>
+	<td>|</td>
+	<td>{% if p.g2 %} <font color='red'>on</font> {% else %} off {% endif %} </td>
+	<td>|</td>
+	<td>{% if p.g3 %} <font color='red'>on</font> {% else %} off {% endif %} </td>
+	<td>|</td>
+	<td>{% if p.turbo %} <font color='red'>on</font> {% else %} off {% endif %} </td>
+	<td>|</td>
+	<td>{% if p.wakacje %} <font color='red'>on</font> {% else %} off {% endif %} </td>
+	<td>|</td>
+	<td>{% if p.awaria %} <font color='red'>on</font> {% else %} off {% endif %} </td>
+	</tr>
+	{% endfor %}
+    </table>
+{% else %}
+    <p>No samples are available.</p>
+{% endif %}
+<br>
+
+Od początku dnia grzałki była włączone przez 
+{% for g in g_dzisiaj %}
+g{{forloop.counter0}}: {{ g|floatformat:1 }} h ||| 
+{% endfor %}
+<br>
+Wczoraj były włączone przez 
+{% for g in g_wczoraj %}
+g{{forloop.counter0}}: {{ g|floatformat:1 }} h ||| 
+{% endfor %}
+<br>
+
+Średnio dniennie przez ostatni tydzień były włączone przez 
+{% for g in g_tydzien %}
+g{{forloop.counter0}}: {{ g|floatformat:1 }} h ||| 
+{% endfor %}
+<br>
+
+</body>
+</html>

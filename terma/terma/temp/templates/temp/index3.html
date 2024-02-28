@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+window.onload = function () {
+
+var options = {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Temperatury w termie"
+	},
+	axisX:{
+		valueFormatString: "DD MMM HH:mm"
+	},
+	axisY: {
+		title: "Temperatura",
+		suffix: "C",
+		minimum: 30
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [{
+		type: "line",
+		showInLegend: true,
+		name: "Niska",
+		markerType: "none",
+		xValueFormatString: "HH:mm",
+		yValueFormatString: "#,####",
+		dataPoints: [
+			{% for s in latest_samples_list %}
+		{ x: new Date({{ s.data.year }}, {{ s.data.month }}, {{ s.data.day }}, {{ s.data.hour }}, {{ s.data.minute }}), y: {{ s.t1 }} },
+			{% endfor %}
+		]
+	},
+	{
+		type: "line",
+		showInLegend: true,
+		name: "Średnia",
+		markerType: "none",
+		xValueFormatString: "HH:mm",
+		yValueFormatString: "#,####",
+		dataPoints: [
+			{% for s in latest_samples_list %}
+		{ x: new Date({{ s.data.year }}, {{ s.data.month }}, {{ s.data.day }}, {{ s.data.hour }}, {{ s.data.minute }}), y: {{ s.t2 }} },
+			{% endfor %}
+		]
+	},
+	{
+		type: "line",
+		showInLegend: true,
+		name: "Wysoka",
+		markerType: "none",
+		xValueFormatString: "HH:mm",
+		yValueFormatString: "#,####",
+		dataPoints: [
+			{% for s in latest_samples_list %}
+		{ x: new Date({{ s.data.year }}, {{ s.data.month }}, {{ s.data.day }}, {{ s.data.hour }}, {{ s.data.minute }}), y: {{ s.t3 }} },
+			{% endfor %}
+		]
+	},
+	]
+};
+$("#chartContainer").CanvasJSChart(options);
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+</body>
+</html>
